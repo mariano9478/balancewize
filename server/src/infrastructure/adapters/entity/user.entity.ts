@@ -10,15 +10,15 @@ export type UserDocument = User & mongoose.Document;
 export class User {
   _id: unknown;
   @Prop()
-  name: string;
+  name!: string;
   @Prop()
-  email: string;
+  email!: string;
   @Prop()
-  password: string;
+  password!: string;
   @Prop()
-  phone: number;
+  phone!: number;
   @Prop()
-  accounts: Account[];
+  accounts!: Account[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

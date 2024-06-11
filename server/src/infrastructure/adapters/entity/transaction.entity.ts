@@ -8,17 +8,17 @@ export type TransactionDocument = Transaction & mongoose.Document;
 export class Transaction {
   _id: unknown;
   @Prop()
-  name: string;
+  name!: string;
   @Prop()
-  description: string;
+  description!: string;
   @Prop()
-  amount: number;
+  amount!: number;
   @Prop()
-  date: Date;
+  date!: Date;
   @Prop()
-  type: "income" | "expense" | "transfer";
-  @Prop()
-  frequency: {
+  type!: "income" | "expense" | "transfer";
+  @Prop({ type: Object })
+  frequency!: {
     type: "once" | "daily" | "weekly" | "monthly" | "yearly" | "quota";
     iterations?: number;
     on?: Date;

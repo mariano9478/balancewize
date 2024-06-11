@@ -1,21 +1,10 @@
-import { Global, Logger, Module, Provider } from "@nestjs/common";
-import { LogLevel } from "@nestjs/common/services/logger.service";
-import { ConfigService } from "@nestjs/config";
+import { Global, Module } from "@nestjs/common";
 
-const loggerProvider: Provider = {
-  provide: Logger,
-  useFactory: (configService: ConfigService) => {
-    const level = configService.get<LogLevel>("LOGGER_LEVEL", "log");
-    const logger = new Logger();
-    logger.localInstance.setLogLevels?.([level]);
-    return logger;
-  },
-  inject: [ConfigService],
-};
+import LogService from "./logger.service";
 
 @Global()
 @Module({
-  providers: [loggerProvider],
-  exports: [loggerProvider],
+  providers: [LogService],
+  exports: [LogService],
 })
-export class LoggerModule {}
+export class LogModule {}

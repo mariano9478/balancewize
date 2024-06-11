@@ -2,17 +2,19 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
 
+import { Transaction } from "./transaction.entity";
+
 export type UserDocument = Account & mongoose.Document;
 
 @Schema()
 export class Account {
   _id: unknown;
   @Prop()
-  name: string;
+  name!: string;
   @Prop()
-  type: "bank" | "credit" | "investment";
+  type!: "bank" | "credit" | "investment";
   @Prop()
-  balance: number;
+  balance!: number;
   @Prop()
   creditLimit!: number;
   @Prop()
@@ -20,7 +22,7 @@ export class Account {
   @Prop()
   issueDate!: Date;
   @Prop()
-  transactions: Transaction[];
+  transactions!: Transaction[];
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);

@@ -2,10 +2,10 @@ import { Module } from "@nestjs/common";
 
 import { ApplicationModule } from "../application/application.module";
 import { DatabaseModule } from "./adapters/database.module";
-import { MatterContorller } from "./controllers/matters.controller";
+import { UserContorller } from "./controllers/user.controller";
 
 @Module({
   imports: [ApplicationModule, DatabaseModule],
-  controllers: [MatterContorller],
+  controllers: [UserContorller],
 })
 export class InfrastructureModule {}

@@ -2,16 +2,16 @@ import { Module } from "@nestjs/common";
 import { DomainModule } from "src/domain/domain.module";
 
 import { DatabaseModule } from "@src/infrastructure/adapters/database.module";
-import MatterRepositoryMongo from "@src/infrastructure/adapters/repository/matter/matter.repository.mongo";
+import UserRepositoryMongo from "@src/infrastructure/adapters/repository/user.repository.mongo";
 
-import { ACTOR_USECASES } from "./usecases/matter";
+import { USER_USECASES } from "./usecases/user";
 
 @Module({
   imports: [DomainModule, DatabaseModule],
   providers: [
-    ...ACTOR_USECASES,
-    { provide: "MatterRepository", useClass: MatterRepositoryMongo },
+    ...USER_USECASES,
+    { provide: "UserRepository", useClass: UserRepositoryMongo },
   ],
-  exports: [...ACTOR_USECASES],
+  exports: [...USER_USECASES],
 })
 export class ApplicationModule {}

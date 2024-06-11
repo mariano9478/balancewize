@@ -11,8 +11,8 @@ import { Model } from "mongoose";
 
 import UserModel from "@src/domain/models/user.model";
 import { UserRepository } from "@src/domain/ports/repositories/user.repository";
-import { UserMapper } from "@src/infrastructure/adapters/mappers/user.mapper";
-import UserDto from "@src/infrastructure/dto/user.dto";
+import UserDto from "@src/infrastructure/dtos/user.dto";
+import { UserMapper } from "@src/infrastructure/mappers/user.mapper";
 
 import { User, UserDocument } from "../entity/user.entity";
 
@@ -35,15 +35,22 @@ export default class UserRepositoryMongo implements UserRepository {
       const passwordMatch = hash.toString("hex") === storedHash;
       if (passwordMatch) {
         // Passwords match, return the user model
-        return UserMapper.toDomainModel(user);
+        return UserMapper.toDomain(user);
       }
-      return UnauthorizedException;
+      throw new UnauthorizedException("Invalid password");
     }
 
     // User not found or password doesn't match
-    return NotFoundException;
+    throw new NotFoundException();
   }
-  async signUp(user: UserDto): Promise<UserModel> {
+  async signIn(user: UserDto): Promise<UserModel> {
+    // Check if the user already exists
+    const existingUser = await this.userRepository.findOne({
+      email: user.email,
+    });
+    if (existingUser) {
+      throw new UnauthorizedException("User already exists");
+    }
     // Hash the password
     const salt = randomBytes(8).toString("hex");
     const hash = (await scrypt(user.password, salt, 32)) as Buffer;
@@ -60,5 +67,12 @@ export default class UserRepositoryMongo implements UserRepository {
 
     // Return the user model
     return UserMapper.toDomain(newUser);
+  }
+  async whoami(id: string): Promise<UserModel> {
+    const user = await this.userRepository.findById(id);
+    if (user) {
+      return UserMapper.toDomain(user);
+    }
+    throw new NotFoundException();
   }
 }

@@ -5,6 +5,8 @@ import {
 } from "@src/domain/models/account.model";
 import { Account } from "@src/infrastructure/adapters/entity/account.entity";
 
+import { TransactionMapper } from "./transaction.mapper";
+
 export const AccountMapper = {
   toDomain(accountMongo: Account): IAccountModel {
     let account: IAccountModel;
